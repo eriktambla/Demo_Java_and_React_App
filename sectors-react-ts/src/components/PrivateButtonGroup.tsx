@@ -1,3 +1,10 @@
+import { Link } from "react-router-dom";
+
 export function PrivateButtonGroup() {
-    return <button>Logout</button>
+  return (
+    <Link to="/" onClick={() => console.log("logout")}>
+      Logout
+    </Link>
+  );
 }
+
