@@ -2,28 +2,30 @@ import { useParams } from "react-router-dom";
 import BackendClient from "../../api/BackendClient";
 import { useQuery } from "@tanstack/react-query";
 import SectorsForm from "../../modules/Sectors/SectorsForm";
+import { SectorDto } from "../../api/response/SectorDto";
 
 export default function Sectors() {
-  const { userId } = useParams();
+	const { userId } = useParams();
 
-  const userSectorsQuery = useQuery({
-    queryKey: ["getUserSectors", userId],
-    queryFn: () => BackendClient.getUserSectors(userId!),
-    enabled: !!userId,
-  });
+	const { isLoading, isError, data } = useQuery({
+		queryKey: ["getUserSectors", userId],
+		queryFn: () => BackendClient.getUserSectors(userId!),
+		enabled: !!userId,
+	});
 
-  if (userSectorsQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (userSectorsQuery.isError) {
-    return <div>Error</div>;
-  }
+	const initialSectors = data?.sectors?.map((sector: SectorDto) => ({
+		value: sector?.value,
+		label: sector?.name,
+	}));
 
-  return (
-    <div>
-      <h3>Sectors</h3>
-      <SectorsForm userSectors={userSectorsQuery.data!} />
-    </div>
-  );
+	return (
+		<div className="flex flex-col items-center">
+			<h3 className="mb-5 text-xl font-bold">Sectors</h3>
+			{isLoading && <p>Loading...</p>}
+			{isError && <p>Error</p>}
+			{!isError && !isLoading && (
+				<SectorsForm userSectors={data!} initialSectors={initialSectors} />
+			)}
+		</div>
+	);
 }
-

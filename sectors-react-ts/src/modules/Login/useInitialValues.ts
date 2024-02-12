@@ -1,6 +1,6 @@
 export const useInitialValues = () => {
-    return {
-        username: '',
-        password: '',
-    }
-}
+	return {
+		username: "",
+		password: "",
+	};
+};

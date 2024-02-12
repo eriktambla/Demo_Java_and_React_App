@@ -1,5 +1,5 @@
 export interface SectorDto {
-  id: string;
-  name: string;
+	value: string;
+	name: string;
+	children?: SectorDto[];
 }
-

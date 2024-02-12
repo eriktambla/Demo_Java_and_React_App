@@ -1,7 +1,7 @@
 export const useInitialValues = () => {
-    return {
-        username: '',
-        password: '',
-        confirmPassword: '',
-    }
-}
+	return {
+		username: "",
+		password: "",
+		confirmPassword: "",
+	};
+};

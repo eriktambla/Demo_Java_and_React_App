@@ -32,24 +32,25 @@ public class Sector {
     @Column(name = "sector_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private Number value;
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Sector parentSector;
 
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentSector", cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Sector> childrenSectors = new ArrayList<>();
 
-    public Sector(String name) {
+    public Sector(String name, Number value) {
         this.name = name;
+        this.value = value;
     }
 
-    public Sector(String name, Sector parentSector) {
+    public Sector(String name, Number value, Sector parentSector) {
         this.name = name;
+        this.value = value;
         this.parentSector = parentSector;
     }
 

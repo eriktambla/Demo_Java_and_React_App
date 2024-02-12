@@ -7,40 +7,62 @@ import { useSchema } from "./useSchema";
 import { RHFTextField } from "../../components/RHF/RHFTextfield";
 import { Button } from "react-aria-components";
 import { RHFCheckbox } from "../../components/RHF/RHFCheckbox";
+import Card from "../../components/Card";
+import { RHFSelect } from "../../components/RHF/RHFSelect";
+import { useQuery } from "@tanstack/react-query";
+import BackendClient from "../../api/BackendClient";
 
 export default function SectorsForm({
-  userSectors,
+	userSectors,
+	initialSectors,
 }: {
-  userSectors: UserWithSectorsDto;
+	userSectors: UserWithSectorsDto;
+	initialSectors?: {
+		value: string;
+		label: string;
+	}[];
 }) {
-  const initialValues = useInitialValues(userSectors);
-  const validationSchema = useSchema();
+	const initialValues = useInitialValues(userSectors, initialSectors);
+	const validationSchema = useSchema();
 
-  const form = useForm({
-    defaultValues: initialValues,
-    resolver: zodResolver(validationSchema),
-  });
+	const sectorQuery = useQuery({
+		queryKey: ["getAllSectors"],
+		queryFn: () => BackendClient.getAllSectors(),
+	});
 
-  const onSubmit = (values: unknown) => {
-    console.log(values);
-  };
+	const form = useForm({
+		defaultValues: initialValues,
+		resolver: zodResolver(validationSchema),
+	});
 
-  return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex flex-col w-1/2 mx-5 p-14 space-y-12 border border-gray-300 rounded-2xl">
-          <RHFTextField name="name" label="Name" type="text" />
-          <RHFCheckbox name="agreeToTerms" label="Agree to terms" />
-          <Button
-            type="submit"
-            className="bg-green-400 hover:bg-green-500  w-1/2 self-center"
-          >
-            Save
-          </Button>
-        </div>
-      </form>
-      <DevTool control={form.control} />
-    </FormProvider>
-  );
+	const onSubmit = (values: any) => {
+		console.log(values);
+	};
+
+	return (
+		<FormProvider {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="w-full sm:w-1/2">
+				<Card>
+					<p className="text-left">
+						Please enter your name and pick the Sectors you are currently
+						involved in.
+					</p>
+					<RHFTextField name="name" label="Name" type="text" />
+					<RHFSelect
+						name="sectors"
+						label="Sectors"
+						options={sectorQuery.data}
+					/>
+					<RHFCheckbox name="agreeToTerms" label="Agree to terms" />
+					<Button
+						type="submit"
+						className="self-center  bg-green-400 hover:bg-green-500"
+					>
+						Save
+					</Button>
+				</Card>
+			</form>
+			<DevTool control={form.control} />
+		</FormProvider>
+	);
 }
-

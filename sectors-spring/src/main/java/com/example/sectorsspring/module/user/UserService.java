@@ -6,7 +6,6 @@ import com.example.sectorsspring.module.sector.Sector;
 import com.example.sectorsspring.module.sector.SectorDto;
 import com.example.sectorsspring.module.sector.SectorRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +46,7 @@ public class UserService {
                     .agreedToTerms(user.get().getAgreedToTerms())
                     .sectors(sectors.stream().map(sector ->
                             SectorDto.builder()
-                                    .id(sector.getId())
+                                    .value(sector.getId())
                                     .name(sector.getName())
                                     .build()
                     ).toList())

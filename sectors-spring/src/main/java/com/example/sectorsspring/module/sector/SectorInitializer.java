@@ -24,17 +24,17 @@ public class SectorInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         /*Manufacturing with children*/
-        Sector manufacturing = new Sector("Manufacturing");
-        Sector constructionMaterials = new Sector("Construction Materials", manufacturing);
-        Sector electronicsAndOptics = new Sector("Electronics and Optics", manufacturing);
-        Sector foodAndBeverage = new Sector("Food and Beverage", manufacturing);
-        Sector furniture = new Sector("Furniture", manufacturing);
-        Sector machinery = new Sector("Machinery", manufacturing);
-        Sector metalWorking = new Sector("Metalworking", manufacturing);
-        Sector plasticAndRubber = new Sector("Plastic and Rubber", manufacturing);
-        Sector printing = new Sector("Printing", manufacturing);
-        Sector textileAndClothing = new Sector("Textile and Clothing", manufacturing);
-        Sector wood = new Sector("Wood", manufacturing);
+        Sector manufacturing = new Sector("Manufacturing", 1);
+        Sector constructionMaterials = new Sector("Construction Materials", 19, manufacturing);
+        Sector electronicsAndOptics = new Sector("Electronics and Optics", 18, manufacturing);
+        Sector foodAndBeverage = new Sector("Food and Beverage", 6,  manufacturing);
+        Sector furniture = new Sector("Furniture", 342, manufacturing);
+        Sector machinery = new Sector("Machinery", 12,  manufacturing);
+        Sector metalWorking = new Sector("Metalworking", 11, manufacturing);
+        Sector plasticAndRubber = new Sector("Plastic and Rubber", 9, manufacturing);
+        Sector printing = new Sector("Printing", 5, manufacturing);
+        Sector textileAndClothing = new Sector("Textile and Clothing", 7, manufacturing);
+        Sector wood = new Sector("Wood", 8, manufacturing);
 
         manufacturing.addChild(constructionMaterials);
         manufacturing.addChild(electronicsAndOptics);
@@ -48,16 +48,16 @@ public class SectorInitializer implements CommandLineRunner {
         manufacturing.addChild(wood);
 
         /*Food and Beverage children*/
-        Sector bakeryAndConfectionery = new Sector("Bakery & confectionery products", foodAndBeverage);
-        Sector beverages = new Sector("Beverages", foodAndBeverage);
+        Sector bakeryAndConfectionery = new Sector("Bakery & confectionery products", 342, foodAndBeverage);
+        Sector beverages = new Sector("Beverages", 43, foodAndBeverage);
         foodAndBeverage.addChild(bakeryAndConfectionery);
         foodAndBeverage.addChild(beverages);
 
         sectorRepository.save(manufacturing);
 
-        Sector other = new Sector("Other");
+        Sector other = new Sector("Other", 3);
 
-        Sector service = new Sector("Service");
+        Sector service = new Sector("Service", 227);
 
         List<Sector> testUserSector = new ArrayList<>();
         testUserSector.add(manufacturing);
