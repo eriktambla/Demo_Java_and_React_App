@@ -2,6 +2,7 @@ import axios from "axios";
 import {
 	API_ALL_SECTORS,
 	API_LOGIN,
+	API_LOGOUT,
 	API_USER_SIGN_UP,
 	getUserSectorsUrl,
 } from "./endpoints";
@@ -30,6 +31,11 @@ export default {
 				},
 			},
 		);
+
+		return data;
+	},
+	logout: async () => {
+		const { data } = await axios.post(API_LOGOUT);
 
 		return data;
 	},

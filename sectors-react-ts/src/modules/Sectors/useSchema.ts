@@ -7,12 +7,10 @@ export const useSchema = () => {
 		sectors: z
 			.array(
 				z.object({
-					id: z.string(),
+					value: z.number(),
 					label: z.string(),
 				}),
 			)
-			.nonempty({
-				message: "At least one sector is required",
-			}),
+			.nonempty({ message: "At least one sector is required" }),
 	});
 };

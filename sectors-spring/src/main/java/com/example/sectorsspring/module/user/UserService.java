@@ -1,7 +1,6 @@
 package com.example.sectorsspring.module.user;
 
 import com.example.sectorsspring.UserSectorRepository;
-import com.example.sectorsspring.helpers.AuthenticationHelper;
 import com.example.sectorsspring.module.sector.Sector;
 import com.example.sectorsspring.module.sector.SectorDto;
 import com.example.sectorsspring.module.sector.SectorRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,7 +17,6 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationHelper authHelper;
     private final UserSectorRepository userSectorRepository;
     private final SectorRepository sectorRepository;
     private final UserRepository userRepository;
@@ -36,9 +33,9 @@ public class UserService {
     }
 
     public UserSectorsDto getUserWithSectors(Long userId){
-        List<Long> usersSectorsIds = userSectorRepository.findByUserIdSectorIds(Long.valueOf(userId));
+        List<Long> usersSectorsIds = userSectorRepository.findByUserIdSectorIds(userId);
         List<Sector> sectors = sectorRepository.findAllById(usersSectorsIds);
-        Optional<User> user = userRepository.findById(Long.valueOf(userId));
+        Optional<User> user = userRepository.findById(userId);
 
         if(user.isPresent()){
             return UserSectorsDto.builder()
@@ -54,17 +51,5 @@ public class UserService {
         }
 
         throw new NoSuchElementException("No value present");
-    }
-
-    public UserDto getUser(Long userId) {
-        User authenticatedUser = authHelper.getAuthenticatedUserEntity();
-
-        if (authenticatedUser == null || !Objects.equals(authenticatedUser.getId(), userId)) {
-            throw new IllegalArgumentException();
-        }
-
-        return repository.findById(userId)
-                .map(User::toDto)
-                .orElseThrow(IllegalArgumentException::new);
     }
 }

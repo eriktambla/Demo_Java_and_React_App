@@ -79,7 +79,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    /*TODO: Could use mapstruct*/
     public UserDto toDto() {
         List<Sector> sectorList = new ArrayList<>(sectors);
         return new UserDto(name, agreedToTerms, sectorList);

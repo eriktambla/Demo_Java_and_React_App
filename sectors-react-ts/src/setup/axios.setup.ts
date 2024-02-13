@@ -1,8 +1,6 @@
 import axios from "axios";
-import { API_LOGOUT } from "../api/endpoints";
 
-const logout = async () => {
-	await axios.get<void>(API_LOGOUT);
+const logout = () => {
 	window.location.assign("/login");
 };
 

@@ -17,7 +17,6 @@ export const ROUTES: RouteObject[] = [
 		],
 	},
 	{
-		path: "/user/:userId",
 		element: <PrivateRoute />,
 		children: [
 			{

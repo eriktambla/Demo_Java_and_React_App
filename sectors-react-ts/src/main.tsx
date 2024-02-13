@@ -14,8 +14,6 @@ const queryClient = new QueryClient({
 	},
 });
 
-/* TODO: AutProvider */
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>

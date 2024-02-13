@@ -8,9 +8,19 @@ import { RHFTextField } from "../../components/RHF/RHFTextfield";
 import { Button } from "react-aria-components";
 import { RHFCheckbox } from "../../components/RHF/RHFCheckbox";
 import Card from "../../components/Card";
-import { RHFSelect } from "../../components/RHF/RHFSelect";
+import { RHFMultiSelect } from "../../components/RHF/RHFSelect";
 import { useQuery } from "@tanstack/react-query";
 import BackendClient from "../../api/BackendClient";
+import { SectorDto } from "../../api/response/SectorDto";
+
+export interface SectorFormValues {
+	name: string;
+	sectors: {
+		value: string;
+		label: string;
+	}[];
+	agreeToTerms: boolean;
+}
 
 export default function SectorsForm({
 	userSectors,
@@ -25,7 +35,7 @@ export default function SectorsForm({
 	const initialValues = useInitialValues(userSectors, initialSectors);
 	const validationSchema = useSchema();
 
-	const sectorQuery = useQuery({
+	const allSectorsQuery = useQuery({
 		queryKey: ["getAllSectors"],
 		queryFn: () => BackendClient.getAllSectors(),
 	});
@@ -35,9 +45,22 @@ export default function SectorsForm({
 		resolver: zodResolver(validationSchema),
 	});
 
-	const onSubmit = (values: any) => {
+	const onSubmit = (values: SectorFormValues) => {
 		console.log(values);
 	};
+
+	if (allSectorsQuery.isLoading) {
+		return <p>Error</p>;
+	}
+
+	if (allSectorsQuery.isError) {
+		return <p>Error</p>;
+	}
+
+	const sectorsOptions = allSectorsQuery.data?.map((sector: SectorDto) => ({
+		value: sector.value,
+		label: sector.name,
+	}));
 
 	return (
 		<FormProvider {...form}>
@@ -48,10 +71,10 @@ export default function SectorsForm({
 						involved in.
 					</p>
 					<RHFTextField name="name" label="Name" type="text" />
-					<RHFSelect
+					<RHFMultiSelect
 						name="sectors"
 						label="Sectors"
-						options={sectorQuery.data}
+						options={sectorsOptions!}
 					/>
 					<RHFCheckbox name="agreeToTerms" label="Agree to terms" />
 					<Button

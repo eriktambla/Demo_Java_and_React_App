@@ -1,34 +1,31 @@
 import { Controller, useFormContext } from "react-hook-form";
-import ReactSelect from "react-select";
-import { SectorDto } from "../../api/response/SectorDto";
+import Select from "react-select";
 import { Label } from "react-aria-components";
 
-interface RHFSelect {
+interface ReactSelectOptions {
+	value: string;
+	label: string;
+}
+
+interface RHFMultiSelect {
 	name: string;
 	label?: string;
 	type?: string;
-	options: any;
+	options: ReactSelectOptions[];
 	isRequired?: boolean;
 }
 
-export function RHFSelect({ name, label, options }: RHFSelect) {
+export function RHFMultiSelect({ name, label, options }: RHFMultiSelect) {
 	const { control } = useFormContext();
-
-	const sectorsOptions = options?.map((sector: SectorDto) => ({
-		value: sector?.value,
-		label: sector?.name,
-	}));
-
-	console.log(options);
 
 	return (
 		<Controller
 			name={name}
 			control={control}
-			render={({ field: props, fieldState: { error } }) => (
+			render={({ field, fieldState: { error } }) => (
 				<div className="flex flex-col text-left">
 					{label && <Label className="font-bold">{label}</Label>}
-					<ReactSelect {...props} isMulti options={sectorsOptions} />
+					<Select {...field} isMulti options={options} />
 					{error && <p className="text-red-500">{error.message}</p>}
 				</div>
 			)}
