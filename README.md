@@ -40,20 +40,20 @@ In this README you will find documentation on what and why was used. General doc
 ## Backend
 ### Main technologies chosen and why:
 - Framework **Spring Boot**
-  - I most familiar with it.
+  - I am most familiar with it.
   - Great DX.
   - Easy to use.
 - Data access **Spring Data JPA**
   - Reduces boilerplate for interacting with database.
   - Simple to use.
 - Authentication **Spring Security**
-  - De-facto standard for securing Spring-based applications
+  - De-facto standard for securing Spring-based applications.
 - RESTful APIs **Spring Web MVC**
-  - Easy to use
+  - Easy to use.
 - Less boilerplate **lombok**
 ### Further improvement ideas
 - Add all types of tests.
-- Refactor
-- Add custom exceptions
-- Improve UserService 
+- Refactor.
+- Add custom exceptions.
+- Improve UserService.
 - Enable csrf protection by sending XSRF-TOKEN cookie to frontend.
