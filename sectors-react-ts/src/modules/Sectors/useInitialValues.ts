@@ -6,7 +6,7 @@ export const useInitialValues = (
 ) => {
 	return {
 		name: userSectors?.name ?? "",
-		agreeToTerms: userSectors?.agreeToTerms ?? false,
+		agreedToTerms: userSectors?.agreedToTerms ?? false,
 		sectors: initialSectors ?? [],
 	};
 };

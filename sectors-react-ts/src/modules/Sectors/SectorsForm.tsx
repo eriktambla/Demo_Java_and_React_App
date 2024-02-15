@@ -9,9 +9,10 @@ import { Button } from "react-aria-components";
 import { RHFCheckbox } from "../../components/RHF/RHFCheckbox";
 import Card from "../../components/Card";
 import { RHFMultiSelect } from "../../components/RHF/RHFSelect";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import BackendClient from "../../api/BackendClient";
 import { SectorDto } from "../../api/response/SectorDto";
+import { useParams } from "react-router-dom";
 
 export interface SectorFormValues {
 	name: string;
@@ -19,7 +20,7 @@ export interface SectorFormValues {
 		value: string;
 		label: string;
 	}[];
-	agreeToTerms: boolean;
+	agreedToTerms: boolean;
 }
 
 export default function SectorsForm({
@@ -32,6 +33,7 @@ export default function SectorsForm({
 		label: string;
 	}[];
 }) {
+	const { userId } = useParams();
 	const initialValues = useInitialValues(userSectors, initialSectors);
 	const validationSchema = useSchema();
 
@@ -45,8 +47,13 @@ export default function SectorsForm({
 		resolver: zodResolver(validationSchema),
 	});
 
+	const updateUserWithSectorsMutation = useMutation({
+		mutationFn: (body: SectorFormValues) =>
+			BackendClient.updateUserWithSectors(userId!, body),
+	});
+
 	const onSubmit = (values: SectorFormValues) => {
-		console.log(values);
+		updateUserWithSectorsMutation.mutate(values);
 	};
 
 	if (allSectorsQuery.isLoading) {
@@ -76,7 +83,7 @@ export default function SectorsForm({
 						label="Sectors"
 						options={sectorsOptions!}
 					/>
-					<RHFCheckbox name="agreeToTerms" label="Agree to terms" />
+					<RHFCheckbox name="agreedToTerms" label="Agree to terms" />
 					<Button
 						type="submit"
 						className="self-center  bg-green-400 hover:bg-green-500"

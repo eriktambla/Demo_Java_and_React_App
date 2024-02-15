@@ -3,6 +3,6 @@ import { SectorDto } from "./SectorDto";
 export interface UserWithSectorsDto {
 	id: string;
 	name?: string;
-	agreeToTerms?: boolean;
+	agreedToTerms?: boolean;
 	sectors?: SectorDto[];
 }

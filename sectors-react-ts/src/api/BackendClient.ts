@@ -11,6 +11,7 @@ import { LoginDto } from "./dto/LoginDto";
 import { UserId } from "./response/UserId";
 import { UserWithSectorsDto } from "./response/UserWithSectorsDto";
 import { SectorDto } from "./response/SectorDto";
+import { SectorFormValues } from "../modules/Sectors/SectorsForm";
 
 export default {
 	signUp: async (body: SignUpDto) => {
@@ -41,6 +42,17 @@ export default {
 	},
 	getUserSectors: async (userId: string): Promise<UserWithSectorsDto> => {
 		const { data } = await axios.get(getUserSectorsUrl(userId));
+
+		return data;
+	},
+	updateUserWithSectors: async (
+		userId: string,
+		userWithSectors: SectorFormValues,
+	) => {
+		const { data } = await axios.put(
+			getUserSectorsUrl(userId),
+			userWithSectors,
+		);
 
 		return data;
 	},

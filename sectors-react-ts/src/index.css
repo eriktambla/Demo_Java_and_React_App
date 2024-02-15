@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Kept this to cut development time from moving this to tailwind */
+
 body {
 	@apply flex place-items-center;
 }
