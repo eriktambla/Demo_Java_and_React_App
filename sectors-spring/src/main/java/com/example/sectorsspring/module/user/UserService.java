@@ -1,10 +1,10 @@
 package com.example.sectorsspring.module.user;
 
-import com.example.sectorsspring.UserSectorRepository;
 import com.example.sectorsspring.module.sector.Sector;
 import com.example.sectorsspring.module.sector.SectorDto;
 import com.example.sectorsspring.module.sector.SectorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,18 +32,18 @@ public class UserService {
                 .build());
     }
 
-    public UserSectorsDto getUserWithSectors(Long userId){
+    public UserSectorsDto getUserWithSectors(Long userId) {
         List<Long> usersSectorsIds = userSectorRepository.findByUserIdSectorIds(userId);
         List<Sector> sectors = sectorRepository.findAllById(usersSectorsIds);
         Optional<User> user = userRepository.findById(userId);
 
-        if(user.isPresent()){
+        if (user.isPresent()) {
             return UserSectorsDto.builder()
                     .name(user.get().getName())
                     .agreedToTerms(user.get().getAgreedToTerms())
                     .sectors(sectors.stream().map(sector ->
                             SectorDto.builder()
-                                    .value(sector.getId())
+                                    .value(sector.getValue())
                                     .name(sector.getName())
                                     .build()
                     ).toList())
@@ -51,5 +51,30 @@ public class UserService {
         }
 
         throw new NoSuchElementException("No value present");
+    }
+
+    public void updateUserWithSectors(Long userId, UserSectorsDto userWithSectors) {
+
+        List<Sector> sectorsList = userWithSectors
+                .getSectors()
+                .stream()
+                .map(sectorDto ->
+                        sectorRepository.findByValue(sectorDto.getValue())
+                ).toList();
+
+        repository.updateNameAndAgreedToTermsById(userWithSectors.getName(), userWithSectors.getAgreedToTerms(), userId);
+        userSectorRepository.deleteByUserId(userId);
+        Optional<User> user = repository.findById(userId);
+
+
+        sectorsList.forEach(sector ->
+                userSectorRepository.save(UserSector.builder()
+                        .sector(sector)
+                        .user(user.orElseThrow())
+                        .build())
+        );
+
+
+        ResponseEntity.ok("User updated");
     }
 }

@@ -12,23 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SectorController {
 
-    private final SectorRepository sectorRepository;
+    private final SectorService service;
 
     @GetMapping("/all")
     public List<SectorDto> getAllSectors() {
-        return sectorRepository.findAll()
-                .stream().map(sector ->
-                    SectorDto.builder()
-                        .value(sector.getValue())
-                        .name(sector.getName())
-                        .children(sector.getChildrenSectors().stream().map(
-                                childSector ->
-                                        SectorDto.builder()
-                                        .value(childSector.getValue())
-                                        .name(childSector.getName())
-                                        .build()
-                        ).toList())
-                        .build()
-                ).toList();
+        return service.getAllSectors();
     }
 }

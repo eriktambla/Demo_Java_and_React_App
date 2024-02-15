@@ -8,7 +8,7 @@ import java.util.List;
 @Builder
 @Data
 public class SectorDto {
-    private Number value;
+    private int value;
     private String name;
     private List<SectorDto> children;
 }

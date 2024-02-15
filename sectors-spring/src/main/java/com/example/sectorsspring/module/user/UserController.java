@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +35,10 @@ public class UserController {
         }
 
         return service.getUserWithSectors(Long.valueOf(userId));
+    }
+
+    @PutMapping("/{userId}/sectors")
+    public void updateUserWithSectors(@PathVariable String userId, @RequestBody UserSectorsDto userWithSectors){
+        service.updateUserWithSectors(Long.valueOf(userId), userWithSectors);
     }
 }
